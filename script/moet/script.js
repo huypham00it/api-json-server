@@ -169,7 +169,7 @@ function start(index) {
 
 function sendData(data) {
     console.log(149, data);
-    fetch("http://localhost:3000/moet", {
+    fetch("https://api-json-server-one.vercel.app/moet", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
