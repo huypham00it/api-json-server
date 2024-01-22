@@ -17,7 +17,7 @@ function provincesCrawler() {
             provinces.push(province);
         });
 
-    if (provinceIndex < 2) {
+    if (provinceIndex < provinces.length) {
         //provinces.length
         console.log("crawling: " + provinceIndex);
         provinceData.name = provinces[provinceIndex].innerText;
