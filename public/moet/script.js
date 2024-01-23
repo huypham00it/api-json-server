@@ -8,8 +8,11 @@ let provinceData = {};
 let provinceIndex = 0;
 
 console.log("start");
-function provincesCrawler() {
+function provincesCrawler(a, b) {
     const provinces = [];
+
+    const start = a ? a : provinceIndex;
+    const end = b ? b : provinces.length;
 
     $(provincesWrap)
         .find(".rcbList li")
@@ -17,10 +20,9 @@ function provincesCrawler() {
             provinces.push(province);
         });
 
-    if (provinceIndex < provinces.length) {
-        //provinces.length
+    if (start < end) {
         console.log("crawling: " + provinceIndex);
-        provinceData.name = provinces[provinceIndex].innerText;
+        provinceData.province = provinces[provinceIndex].innerText;
         provinceData.items = [];
         $(".rcbArrowCell a")[0].click();
         provinces[provinceIndex].click();
@@ -48,7 +50,7 @@ function schoolTypesCrawler(passIndex) {
     if (index < schoolTypes.length) {
         provinceData.items.push({
             id: index,
-            name: schoolTypes[index].innerText,
+            schoolType: schoolTypes[index].innerText,
             items: [],
         });
 
@@ -106,7 +108,7 @@ function townsCrawler(schoolTypeIndex, townIndex) {
             if (index < towns.length) {
                 provinceData.items[schoolTypeIndex].items.push({
                     id: index,
-                    name: towns[index].innerText,
+                    town: towns[index].innerText,
                     items: [],
                 });
                 $(".rcbArrowCell a")[2].click();
@@ -119,16 +121,16 @@ function townsCrawler(schoolTypeIndex, townIndex) {
                 if (schools.length) {
                     provinceData.items[schoolTypeIndex].items.push({
                         index: index,
-                        name: null,
+                        town: null,
                         items: schools.map((item, index) => ({
                             id: index,
-                            name: item.innerText,
+                            school: item.innerText,
                         })),
                     });
                 } else {
                     provinceData.items[schoolTypeIndex].items.push({
                         id: index,
-                        name: null,
+                        town: null,
                         items: [],
                     });
 
@@ -148,7 +150,7 @@ function schoolsCrawler(schoolTypeIndex, townIndex) {
             provinceData.items[schoolTypeIndex].items[townIndex].items =
                 schools.map((item, index) => ({
                     id: index,
-                    name: item.innerText,
+                    school: item.innerText,
                 }));
 
             townsCrawler(schoolTypeIndex, townIndex + 1);
@@ -160,11 +162,8 @@ function checkLoading() {
     return $(".raDiv").length > 1 ? false : true;
 }
 
-function start(index) {
-    if (index) {
-        provinceIndex = index;
-    }
-    provincesCrawler();
+function start(a, b) {
+    provincesCrawler(a, b);
 }
 
 let db = "https://api-json-server-one.vercel.app";
