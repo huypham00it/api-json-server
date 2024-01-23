@@ -115,7 +115,7 @@ function checkLoading() {
 function start(e) {
     e && (provinceIndex = e), provincesCrawler();
 }
-let db = "https://api-json-server-one.vercel.app";
+let db = "http://localhost:5000";
 function sendData(e) {
     console.log(149, e),
         fetch(`${db}/moet`, {
