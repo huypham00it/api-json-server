@@ -167,9 +167,11 @@ function start(index) {
     provincesCrawler();
 }
 
+let db = "https://api-json-server-one.vercel.app";
+
 function sendData(data) {
     console.log(149, data);
-    fetch("https://api-json-server-one.vercel.app/moet", {
+    fetch(`${db}/moet`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
