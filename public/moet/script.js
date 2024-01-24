@@ -11,14 +11,16 @@ console.log("start");
 function provincesCrawler(a, b) {
     const provinces = [];
 
-    const start = a ? a : provinceIndex;
-    const end = b ? b : provinces.length;
-
     $(provincesWrap)
         .find(".rcbList li")
         .each((_provinIndex, province) => {
             provinces.push(province);
         });
+
+    const start = a ? a : provinceIndex;
+    const end = b ? b : provinces.length;
+
+    provinceIndex = start;
 
     if (start < end) {
         console.log("crawling: " + provinceIndex);
@@ -105,7 +107,12 @@ function townsCrawler(schoolTypeIndex, townIndex) {
 
             let index = townIndex ? townIndex : 0;
 
-            if (index < towns.length) {
+            if (
+                index < towns.length &&
+                $("#ctl00_ContentPlaceHolder1_rcbPhongGD_Input").attr(
+                    "disabled"
+                ) !== "disabled"
+            ) {
                 provinceData.items[schoolTypeIndex].items.push({
                     id: index,
                     town: towns[index].innerText,
@@ -127,6 +134,8 @@ function townsCrawler(schoolTypeIndex, townIndex) {
                             school: item.innerText,
                         })),
                     });
+
+                    schoolTypesCrawler(schoolTypeIndex + 1);
                 } else {
                     provinceData.items[schoolTypeIndex].items.push({
                         id: index,
@@ -147,8 +156,21 @@ function schoolsCrawler(schoolTypeIndex, townIndex) {
     const intervalId = setInterval(() => {
         if (checkLoading()) {
             clearInterval(intervalId);
+
+            const schoolWrap = $(
+                "#ctl00_ContentPlaceHolder1_cbTruong_DropDown"
+            );
+            $(".rcbArrowCell a")[3].click();
+
+            const _schools = [];
+            $(schoolWrap)
+                .find(".rcbList li")
+                .each((_provinIndex, province) => {
+                    _schools.push(province);
+                });
+
             provinceData.items[schoolTypeIndex].items[townIndex].items =
-                schools.map((item, index) => ({
+                _schools.map((item, index) => ({
                     id: index,
                     school: item.innerText,
                 }));
@@ -166,7 +188,7 @@ function start(a, b) {
     provincesCrawler(a, b);
 }
 
-let db = "https://api-json-server-one.vercel.app";
+let db = "http://localhost:5000";
 
 function sendData(data) {
     console.log(149, data);
