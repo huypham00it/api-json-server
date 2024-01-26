@@ -30,7 +30,9 @@ function provincesCrawler(a, b) {
         provinces[provinceIndex].click();
         // $(provinces[index]).trigger("click");
 
-        schoolTypesCrawler();
+        setTimeout(() => {
+            schoolTypesCrawler();
+        }, 1000);
         provinceIndex++;
     } else {
         console.log("done");

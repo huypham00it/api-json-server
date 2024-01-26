@@ -41,7 +41,7 @@ server.get("/download/:fieldname", (req, res) => {
 server.use(express.static("script"));
 
 server.use(router);
-server.listen(3000, () => {
+server.listen(5000, () => {
     console.log("JSON Server is running");
 });
 
